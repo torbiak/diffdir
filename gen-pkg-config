@@ -1,0 +1,20 @@
+#!/bin/sh
+# Write a pkg-config metadata file to stdout.
+set -eu
+
+# Accept params via environment variables.
+PREFIX=${PREFIX:?No PREFIX given}
+VERSION=${VERSION:?No VERSION given}
+
+cat >libdiffdir.pc <<EOF
+prefix=$PREFIX
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: diffdir
+Description: Compare directory trees
+Version: $VERSION
+Libs: -L\${libdir} -ldiffdir
+Cflags: -I\${includedir}
+EOF

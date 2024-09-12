@@ -1,2 +1,4 @@
 *.o
 /libdiffdir.a
+/libdiffdir.pc
+/diffdir
