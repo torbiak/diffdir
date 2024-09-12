@@ -27,7 +27,7 @@ clean:
 	rm -f *.o libdiffdir.a libdiffdir.pc diffdir
 
 .PHONY: test
-test:
+test: diffdir
 	./test.py
 
 .PHONY: run
