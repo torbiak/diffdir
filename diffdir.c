@@ -177,7 +177,6 @@ _diffdir(
 
 	dir_a = join(root_a, rel_dir_a);
 	dir_b = join(root_b, rel_dir_b);
-	printf("dir_a=[%s] dir_b=[%s]\n", dir_a, dir_b);  // TODO: remove
 
 	struct dirent **names_a = NULL, **names_b = NULL;
 	int n_a = 0, n_b = 0;
@@ -194,21 +193,18 @@ _diffdir(
 			rel_path_a = join(rel_dir_a, names_a[i_a]->d_name);
 			fprintf(a_only, "%s\n", rel_path_a);
 			++i_a;
-			printf("rel_path_a=[%s]\n", rel_path_a);  // TODO: remove
 			continue;
 		} else if (i_b >= n_b) {
 			if (rel_path_b) free(rel_path_b);
 			rel_path_b = join(rel_dir_b, names_b[i_b]->d_name);
 			fprintf(b_only, "%s\n", rel_path_b);
 			++i_b;
-			printf("rel_path_b=[%s]\n", rel_path_b);  // TODO: remove
 			continue;
 		} else {
 			if (rel_path_a) free(rel_path_a);
 			rel_path_a = join(rel_dir_a, names_a[i_a]->d_name);
 			if (rel_path_b) free(rel_path_b);
 			rel_path_b = join(rel_dir_b, names_b[i_b]->d_name);
-			printf("rel_path_a=[%s] rel_path_b=[%s]\n", rel_path_a, rel_path_b);  // TODO: remove
 		}
 
 		// If a name is only on one side, write it to the appropriate file and
@@ -237,7 +233,6 @@ _diffdir(
 			err = sprintf_alloc("error: filename contains newline");
 			goto cleanup;
 		}
-		printf("path_a=[%s] path_b=[%s]\n", path_a, path_b);  // TODO: remove
 		
 		struct stat stat_a, stat_b;
 		err = stat_chk(path_a, &stat_a);
@@ -252,7 +247,6 @@ _diffdir(
 			is_same = 1;
 		} else if (stat_a.st_size == stat_b.st_size) {
 			err = cmp_file_contents(path_a, path_b, &is_same);
-			printf("cmp_file_contents(%s, %s) = %d\n", path_a, path_b, is_same);  // TODO: remove
 			if (err) goto cleanup;
 		}
 		if (is_same) {
@@ -266,7 +260,6 @@ _diffdir(
 		}
 		if (is_same && is_dir_a && is_dir_b) {
 			// Both sides are dirs: recurse.
-			printf("recurse into %s\n", rel_path_a);  // TODO: remove
 			err = _diffdir(dir_a, rel_path_a, dir_b, rel_path_b, common, a_only, b_only);
 			if (err) goto cleanup;
 		}
