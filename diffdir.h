@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-int
+char*
 diffdir(
 	const char *dir_a,
 	const char *dir_b,

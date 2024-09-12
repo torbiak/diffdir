@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "diffdir.h"
 
@@ -21,7 +22,7 @@ parse_args(int argc, char *argv[], char **dir_a, char **dir_b)
 
 
 // Return a FILE pointer on success, and NULL on error.
-static FILE *
+static FILE*
 open_writable_file(const char *name)
 {
 	FILE *f = fopen(name, "w");
@@ -47,34 +48,34 @@ int
 main(int argc, char *argv[])
 {
 	char *dir_a = NULL, *dir_b = NULL;
-	int err = 0;
 	int rc = EXIT_SUCCESS;
+	char *err = NULL;
+	FILE *common = NULL, *a_only = NULL, *b_only = NULL;
 
-	err = parse_args(argc, argv, &dir_a, &dir_b);
-	if (err) {
+	int err_int = parse_args(argc, argv, &dir_a, &dir_b);
+	if (err_int) {
 		rc = EXIT_FAILURE;
 		goto cleanup;
 	}
 
-	FILE *common = open_writable_file("common");
+	common = open_writable_file("common");
 	if (common == NULL) { goto cleanup; }
-	FILE *a_only = open_writable_file("a_only");
+	a_only = open_writable_file("a_only");
 	if (a_only == NULL) { goto cleanup; }
-	FILE *b_only = open_writable_file("b_only");
+	b_only = open_writable_file("b_only");
 	if (b_only == NULL) { goto cleanup; }
 
 	err = diffdir(dir_a, dir_b, common, a_only, b_only);
 	if (err) {
-		perror("diff dirs");
+		fprintf(stderr, "%s\n", err);
 		goto cleanup;
 	}
 
 cleanup:
-	if (common) { close_file(common, "common"); }
-	if (a_only) { close_file(a_only, "a_only"); }
-	if (b_only) { close_file(b_only, "b_only"); }
-	if (dir_a) { free(dir_a); }
-	if (dir_b) { free(dir_b); }
+	if (err) free(err);
+	if (common) close_file(common, "common");
+	if (a_only) close_file(a_only, "a_only");
+	if (b_only) close_file(b_only, "b_only");
 
 	return rc;
 }
