@@ -12,7 +12,7 @@ exec_prefix=\${prefix}
 libdir=\${exec_prefix}/lib
 includedir=\${prefix}/include
 
-Name: diffdir
+Name: libdiffdir
 Description: Compare directory trees
 Version: $VERSION
 Libs: -L\${libdir} -ldiffdir
