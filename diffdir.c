@@ -197,7 +197,7 @@ _diffdir(
             fprintf(a_only, "%s\n", rel_path_a);
             ++i_a;
             continue;
-        } else if (i_b >= n_b) {
+        } else if (i_a >= n_a) {
             if (rel_path_b) free(rel_path_b);
             rel_path_b = join(rel_dir_b, names_b[i_b]->d_name);
             fprintf(b_only, "%s\n", rel_path_b);
@@ -264,8 +264,8 @@ _diffdir(
         if (is_same && is_dir_a && is_dir_b) {
             // Both sides are dirs: recurse.
             err = _diffdir(
-                    dir_a, rel_path_a,
-                    dir_b, rel_path_b,
+                    root_a, rel_path_a,
+                    root_b, rel_path_b,
                     common, a_only, b_only);
             if (err) goto cleanup;
         }
