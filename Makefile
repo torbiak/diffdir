@@ -1,6 +1,7 @@
 CFLAGS += -std=c99 -Wall -Wextra -O2
 
 PREFIX = /usr/local
+BINDIR = $(PREFIX)/bin
 LIBDIR = $(PREFIX)/lib
 INCLUDEDIR = $(PREFIX)/include
 PKGCONFIGDIR = $(PREFIX)/lib/pkgconfig
@@ -39,8 +40,11 @@ libdiffdir.pc: Makefile
 
 .PHONY: install
 install: libdiffdir.pc
+	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 755 diffdir $(DESTDIR)$(BINDIR)
 	$(INSTALL) -d $(DESTDIR)$(LIBDIR)
-	$(INSTALL) -m 644 $(LIB_NAME) $(DESTDIR)$(LIBDIR)
+	$(INSTALL) -m 644 libdiffdir.a $(DESTDIR)$(LIBDIR)
 	$(INSTALL) -d $(DESTDIR)$(INCLUDEDIR)
 	$(INSTALL) -m 644 diffdir.h $(DESTDIR)$(INCLUDEDIR)
+	$(INSTALL) -d $(DESTDIR)$(PKGCONFIGDIR)
 	$(INSTALL) -m 644 libdiffdir.pc $(DESTDIR)$(PKGCONFIGDIR)
